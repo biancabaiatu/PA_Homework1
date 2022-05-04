@@ -1,0 +1,105 @@
+# Baiatu Bianca-Daniela <baiatu.daniela2001@gmail.com>
+
+First problem: Gigel and the Walsh Tables
+
+    -> This problem's implementation idea is very similar to the ZParcurgere
+        problem learned during the Divide and Conquer lab.
+    -> My implementation divides the initial matrix first into four quadrants
+        then into 16, etc, until the current dimension of one matrix is 2x2
+        and we find the base case.
+    -> For every set of coordinates in the input file, the getInversion method
+        is called. This method is used to find the number of times the
+        searched element is found in the fourth quadrant of the matrix,
+        where all the elements are inverted. At every step of the recursive
+        call the method places the element in a quadrant of the matrix.
+        To do that it compares the element's coordinates to the half of the
+        matrix's length. The element is not inverted when is found in one of
+        these three cases: both coordinates are smaller than the half, the x
+        coordinate is smaller than half and the y coordinate isn't and the y
+        coordinate is smaller than half and the x coordinate isn't. When both
+        coordinates are bigger than the half, it means the number of inversions
+        is increased and the method starts a new recursive call.
+    -> Back in the main function, if the number of inversions returned by the
+        getInversion method is divisible by 2, then the element at the initial
+        set of coordinates is 0, otherwise it is 1.
+
+    COMPLEXITY:
+        -> spatial complexity: O(n) => the parameters stored in the recursive
+            calls
+        -> time complexity: O(log n)
+
+Second problem: Gigel and the Encrypted Words
+
+    -> The idea of the problem is to find the maximum number of words to be
+        concatenated in order to make sure the concatenated word contains a
+        dominant letter, which translates to: The number of appearances of the
+        dominant letter in the concatenated word should be bigger then half of
+        the word's length
+    -> To memorize all the words in the input file I use a list of strings.
+    -> The numberOfAppearances method calculates the number of occurrences of
+        a letter in a certain string
+    -> To find the maximum number of concatenated words I parse all the
+        letters in the alphabet. I then sort the list of words accordingly to
+        the current letter. The words are sorted increasingly, calculating the
+        formula: numberOfAppearances - (string.length - numberOfAppearances).
+    -> After sorting the list of words an empty StringBuilder is created.
+        The words are then parsed in order and are being concatenated until
+        half of the word's length becomes bigger than the number of occurrences
+        of the current letter.
+    -> A counter is being kept to be updated at every new maximum number
+        found at a letter. If a maximum cannot be found value -1 is put
+        int the output file.
+
+    COMPLEXITY:
+        -> spatial complexity: O(n * Lmax of word) => the words are stored in
+            a list
+        -> time complexity: O(n * k), where k is the number of letters
+
+Third problem: Gigel and Prinel
+
+    -> After filling out the array of minimum operations the problem can be
+        reduced to the 0-1 Knapsack problem, where the number of operations
+        required to get from 1 to the number is considered the weight of the
+        product and the number of points of the number is taken as the value
+        of the product to be put in the knapsack.
+    -> The program first fills out the operations array using dynamic programming
+        and the following formula to make it efficient: for every number in the
+        (1, maximum target value) interval it calculates the divisors of the
+        number using the calculateDivisors method and for every divisor found
+        operations[n + divisor] = min(operations[n + divisor], 1 + operations[n])
+    -> Given the operations array and the points array the program has to find
+        the maximum number of points to be received using maximum k operations
+        for every number.
+
+    COMPLEXITY:
+        -> spatial complexity: O(maximum target value) used to store the
+            number of operations + O(k) for the search of the maximum
+            number of points calculations
+        -> time complexity: O(n * k) for the second part of the problem
+            + O(sqrt(n) * n) to calculate all the divisors
+
+Fourth problem: Gigel and the Key from the Wallet
+
+    -> The idea of the problem is very similar to the "Find number of times a
+        string occurs as a subsequence in given string" problem which can be
+        resolved using dynamic programming.
+    -> When calculating the values in the Bottom Up Dynamic Programming
+        matrix there are three cases to consider: the current character in the
+        string is equal to the one in the substring, the current character in
+        the string is '?' and the current characters are different.
+        The matrix is filled by the formula:
+        * In the first case: the current element takes the value of the one
+            on the (i - 1, j - 1) position and adds it to the one above.
+            The first column is calculated by the number of distinct letters
+            raised at the number of '?' characters found so far
+        * In the second case: the current element takes the value of the one
+            on the (i - 1, j - 1) position and adds it to the one above multiplied
+            by the number of distinct characters.
+            The first column is calculated by the number of distinct letters
+            raised at the number of '?' characters found so far - 1.
+        * In the third case: the current element takes the value of the one
+            above.
+
+    COMPLEXITY:
+        -> spatial complexity: O(n * l) space to store the matrix
+        -> time complexity: O(n * l) time to complete matrix
